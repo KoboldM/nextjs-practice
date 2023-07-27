@@ -1,72 +1,36 @@
-var query = `
-query ($id: Int) { # Define which variables will be used in the query (id)
-  Media (id: $id, type: ANIME) { # Insert our variables into the query arguments (id) (type: ANIME is hard-coded in the query)
-    id
-    title {
-      romaji
-      english
-      native
-    }
-  }
-}
-`
+'use client'
 
-var query2 = `
-    query ($name: String, $isModerator: Boolean!) {
-        User (name: $name, isModerator: $isModerator!) {
-            name
-            isModerator
-        }
-    }
-`
+import Image from 'next/image'
+import useSWR from 'swr'
+const fetcher = (...args) => fetch(...args).then(res => res.json())
 
-// var query2 = `
-//     query ($name: String) {
-//         User (name: $name) {
-//             name
-//         }
-//     }
-// `
-
-var variables = {
-    id: 15125
-};
-
-var variables2 = {
-    name: 'KoboldM',
-    isModerator: 'false',
-}
-
-var url = 'https://graphql.anilist.co',
-    options = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-            query: query2,
-            variables: variables2
-        })
-    };
-
-
-export default async function AnimeList() {
-    const { data } = await fetch(url, options)
-    .then(data => data.json())
-    .catch(error =>{
-        console.log(error)
+export default function AnimeList() {
+    const { data, error, isLoading } = useSWR('/api/getanimelist', fetcher, {
+        revalidateOnFocus: false,
+        // revalidateOnMount: false,
+        revalidateIfStale: false,
+        // revalidateOnReconnect: false,
+        // refreshWhenHidden: false,
+        // refreshInterval: 86400,
+        // refreshWhenOffline: false
     })
 
-    console.log('data: ', data)
+    if(error) return <div>Failed to load</div>
+    if(isLoading) return <div>Loading...</div>
 
     return(
-        <div>
-            {/* {data.Media.id}
-            {data.Media.title.romaji}
-            {data.Media.title.english}
-            {data.Media.title.native} */}
-            return main div
+        <div className='flex flex-row flex-wrap bg-red-300 max-w-full h-96'>
+            {/* {console.log(data.data[0].node.main_picture)} */}
+            {data?.data?.map(datum => {
+                return(
+                    <div key={datum.node.id} className='mx-6'>
+                        <div className='h-32 w-32 relative'>
+                            <Image unoptimized fill src={`${datum.node.main_picture.large}`} alt={datum.node.title}/>
+                        </div>
+                        {datum.node.title}
+                    </div>
+                )
+            })}
         </div>
     )
 }
