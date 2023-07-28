@@ -1,7 +1,9 @@
 const MAL_CLIENT_ID = process.env.MAL_CLIENT_ID
 import { NextResponse } from 'next/server';
 
-export async function GET() {
+export async function POST(req) {
+    const data = await req.json()
+
     let apiResponse = {}
     const config = {
         headers: {
@@ -11,7 +13,7 @@ export async function GET() {
         method: 'GET'
     }
 
-    await fetch('https://api.myanimelist.net/v2/users/KoboldM/animelist', config)
+    await fetch(`https://api.myanimelist.net/v2/users/${data}/animelist`, config)
     .then(data => data.json())
     .then(data => {
         apiResponse = data
