@@ -9,7 +9,7 @@ export default function AnimeList() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        fetch(`api/getanimelist/`, {
+        fetch('api/getanimelist/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -19,8 +19,23 @@ export default function AnimeList() {
             .then(data => data.json())
             .then(data => {
                 setAnimeList(data)
+                setQuery('')
             })
             .catch(err => console.log(err))
+    }
+
+    const loadPaginationData = async (url) => {
+        fetch('api/getpaginateanimelist/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(url)
+        }).then(data => data.json())
+        .then(data =>{
+            setAnimeList(data)
+        })
+        .catch(err => console.log(err))
     }
 
     return(
@@ -41,10 +56,16 @@ export default function AnimeList() {
                                     <div className='h-32 w-32 relative'>
                                         <Image unoptimized fill src={`${datum.node.main_picture.large}`} alt={datum.node.title}/>
                                     </div>
-                                    {datum.node.title}
+                                    <div className='flex-wrap'>
+                                        {datum.node.title}
+                                    </div>
                                 </div>
                             )
                         })}
+                        <div className='flex flex-row place-content-center w-full bg-slate-50'>
+                            {animeList?.paging?.previous ? <div onClick={() => loadPaginationData(`${animeList?.paging?.previous}`)}>View previous 10</div> : <div></div>}
+                            {animeList?.paging?.next ? <div onClick={() => loadPaginationData(`${animeList?.paging?.next}`)}>View next 10</div> : <div>asdas</div>}
+                        </div>
                     </div>
                 : <></>}
         </div>
