@@ -1,4 +1,5 @@
 'use client'
+import styles from './animelist.module.scss'
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
@@ -64,11 +65,9 @@ export default function AnimeList() {
     }
 
     return(
-        <div className='bg-slate-300 w-full'>
-            <form className='flex flex-col' method='POST' onSubmit={(e) => handleSubmit(e)} onReset={(e) => handleReset(e)}>
-                Search for a specific user
-
-                <input type='text' value={query} onChange={e => setQuery(e.target.value)} placeholder='MAL Username'></input>
+        <div className={`${styles.animelistForm} + rounded-lg shadow-lg`}>
+            <form className={`${styles.inputForm}`} method='POST' onSubmit={(e) => handleSubmit(e)} onReset={(e) => handleReset(e)}>
+                <input type='text' className={`${styles.usernameInput} + rounded pl-4`} value={query} onChange={e => setQuery(e.target.value)} placeholder='MAL Username'></input>
 
                 <div className='bg-slate-50 flex flex-col'>
                     Anime/Manga List

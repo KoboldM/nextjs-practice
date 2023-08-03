@@ -1,0 +1,14 @@
+.animelistForm {
+    width: 100%;
+    --tw-bg-opacity: 1;
+    background-color: rgb(203 213 225 / var(--tw-bg-opacity));
+
+    .inputForm {
+        display: flex;
+        flex-direction: column;
+
+        .usernameInput {
+            margin: 1rem;
+        }
+    }
+}
