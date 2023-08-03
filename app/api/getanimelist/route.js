@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req) {
     const data = await req.json()
+    console.log(data)
 
     let apiResponse = {}
     const config = {
@@ -13,7 +14,7 @@ export async function POST(req) {
         method: 'GET'
     }
 
-    await fetch(`https://api.myanimelist.net/v2/users/${data}/animelist`, config)
+    await fetch(`https://api.myanimelist.net/v2/users/${data.query}/${data.searchListType === 'anime' ? 'animelist' : 'mangalist'}${data.status === 'all' ? '' : `?status=${data.status}`}`, config)
     .then(data => data.json())
     .then(data => {
         apiResponse = data
