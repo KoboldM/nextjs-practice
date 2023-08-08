@@ -7,6 +7,7 @@ import Image from 'next/image'
 export default function AnimeList() {
     const [query, setQuery] = useState('')
     const [animeList, setAnimeList] = useState([])
+    const [searchedType, setSearchedType] = useState()
     const [searchListType, setSearchListType] = useState('anime')
     const [status, setStatus] = useState('all')
 
@@ -38,6 +39,7 @@ export default function AnimeList() {
         })
             .then(data => data.json())
             .then(data => {
+                setSearchedType(searchListType)
                 setAnimeList(data)
             })
             .catch(err => console.log(err))
@@ -66,6 +68,7 @@ export default function AnimeList() {
 
     return(
         <div className={`${styles.animelistForm} + rounded-lg shadow-lg`}>
+            {console.log(animeList)}
             <form className={`${styles.inputForm}`} method='POST' onSubmit={(e) => handleSubmit(e)} onReset={(e) => handleReset(e)}>
                 <input type='text' className={`${styles.usernameInput} + rounded pl-4`} value={query} onChange={e => setQuery(e.target.value)} placeholder='MAL Username'></input>
 
@@ -145,12 +148,12 @@ export default function AnimeList() {
                 <div className='flex flex-row flex-wrap'>
                     {animeList?.data?.map(datum => {
                         return(
-                            <div key={datum.node.id} className='mx-6'>
+                            <a key={datum.node.id} className='mx-6' target='_blank' href={searchedType === 'anime' ? `https://myanimelist.net/anime/${datum.node.id}` : `https://myanimelist.net/manga/${datum.node.id}`}>
                                 <div className='h-32 w-32 relative'>
                                     <Image unoptimized fill src={`${datum.node.main_picture.large}`} alt={datum.node.title}/>
                                 </div>
                                 {datum.node.title}
-                            </div>
+                            </a>
                         )
                     })}
 
