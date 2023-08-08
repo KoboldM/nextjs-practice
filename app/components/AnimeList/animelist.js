@@ -69,93 +69,100 @@ export default function AnimeList() {
             <form className={`${styles.inputForm}`} method='POST' onSubmit={(e) => handleSubmit(e)} onReset={(e) => handleReset(e)}>
                 <input type='text' className={`${styles.usernameInput} + rounded pl-4`} value={query} onChange={e => setQuery(e.target.value)} placeholder='MAL Username'></input>
 
-                <div className='bg-slate-50 flex flex-col'>
-                    Anime/Manga List
-                    <div>
-                        <input type="radio" id="anime" name="listtype" value="anime" onChange={(e) => setSearchListType(e.target.value)} checked={searchListType === 'anime'}/>
-                        <label htmlFor="anime">Anime</label>
-                    </div>
+                <div className={`${styles.listType}`}>
+                    List Type
+                    <fieldset className={`${styles.radioButtonFieldSet}`}>
+                        <div className={`${styles.radioButton}`}>
+                            <input type="radio" id="anime" name="listtype" value="anime" onChange={(e) => setSearchListType(e.target.value)} checked={searchListType === 'anime'}/>
+                            <label className='block' htmlFor="anime">Anime</label>
+                        </div>
 
-                    <div>
-                        <input type="radio" id="manga" name="listtype" value="manga" onChange={(e) => setSearchListType(e.target.value)} checked={searchListType === 'manga'}/>
-                        <label htmlFor="manga">Manga</label>
-                    </div>
+                        <div>
+                            <input type="radio" id="manga" name="listtype" value="manga" onChange={(e) => setSearchListType(e.target.value)} checked={searchListType === 'manga'}/>
+                            <label className='block' htmlFor="manga">Manga</label>
+                        </div>
+                    </fieldset>
                 </div>
 
-                <div className='bg-slate-50 flex flex-col'>
-                    Status:
+                <div className='flex flex-col text-center'>
+                    Status
 
-                    <div>
-                        <input type="radio" id="all" name="status" value="all" onChange={(e) => setStatus(e.target.value)} checked={status === 'all'}/>
-                        <label htmlFor="all">All</label>
-                    </div>
-
-                    {
-                        searchListType === 'anime' ?
-                        <div>
-                            <input type="radio" id="watching" name="status" value="watching" onChange={(e) => setStatus(e.target.value)} checked={status === 'watching'}/>
-                            <label htmlFor="watching">Watching</label>
-                        </div> :
-                        <div>
-                            <input type="radio" id="reading" name="status" value="reading" onChange={(e) => setStatus(e.target.value)} checked={status === 'reading'}/>
-                            <label htmlFor="reading">Reading</label>
+                    <fieldset className={`${styles.radioButtonFieldSet}`}>
+                        <div className={`${styles.radioButton}`}>
+                            <input type="radio" id="all" name="status" value="all" onChange={(e) => setStatus(e.target.value)} checked={status === 'all'}/>
+                            <label className='block' htmlFor="all">All</label>
                         </div>
-                    }
 
-                    <div>
-                        <input type="radio" id="completed" name="status" value="completed" onChange={(e) => setStatus(e.target.value)} checked={status === 'completed'}/>
-                        <label htmlFor="completed">Completed</label>
-                    </div>
+                        {
+                            searchListType === 'anime' ?
+                            <div className={`${styles.radioButton}`}>
+                                <input type="radio" id="watching" name="status" value="watching" onChange={(e) => setStatus(e.target.value)} checked={status === 'watching'}/>
+                                <label className='block' htmlFor="watching">Watching</label>
+                            </div> :
+                            <div className={`${styles.radioButton}`}>
+                                <input type="radio" id="reading" name="status" value="reading" onChange={(e) => setStatus(e.target.value)} checked={status === 'reading'}/>
+                                <label className='block' htmlFor="reading">Reading</label>
+                            </div>
+                        }
 
-                    <div>
-                        <input type="radio" id="on_hold" name="status" value="on_hold" onChange={(e) => setStatus(e.target.value)} checked={status === 'on_hold'}/>
-                        <label htmlFor="on_hold">On Hold</label>
-                    </div>
-
-                    <div>
-                        <input type="radio" id="dropped" name="status" value="dropped" onChange={(e) => setStatus(e.target.value)} checked={status === 'dropped'}/>
-                        <label htmlFor="dropped">Dropped</label>
-                    </div>
-
-                    {
-                        searchListType === 'anime' ?
-                        <div>
-                            <input type="radio" id="plan_to_watch" name="status" value="plan_to_watch" onChange={(e) => setStatus(e.target.value)} checked={status === 'plan_to_watch'}/>
-                            <label htmlFor="plan_to_watch">Plan to Watch</label>
-                        </div> :
-                        <div>
-                            <input type="radio" id="plan_to_read" name="status" value="plan_to_read" onChange={(e) => setStatus(e.target.value)} checked={status === 'plan_to_read'}/>
-                            <label htmlFor="plan_to_read">Plan to Read</label>
+                        <div className={`${styles.radioButton}`}>
+                            <input type="radio" id="completed" name="status" value="completed" onChange={(e) => setStatus(e.target.value)} checked={status === 'completed'}/>
+                            <label className='block' htmlFor="completed">Completed</label>
                         </div>
-                    }
-                    
+
+                        <div className={`${styles.radioButton}`}>
+                            <input type="radio" id="on_hold" name="status" value="on_hold" onChange={(e) => setStatus(e.target.value)} checked={status === 'on_hold'}/>
+                            <label className='block' htmlFor="on_hold">On Hold</label>
+                        </div>
+
+                        <div className={`${styles.radioButton}`}>
+                            <input type="radio" id="dropped" name="status" value="dropped" onChange={(e) => setStatus(e.target.value)} checked={status === 'dropped'}/>
+                            <label className='block' htmlFor="dropped">Dropped</label>
+                        </div>
+
+                        {
+                            searchListType === 'anime' ?
+                            <div className={`${styles.radioButton}`}>
+                                <input type="radio" id="plan_to_watch" name="status" value="plan_to_watch" onChange={(e) => setStatus(e.target.value)} checked={status === 'plan_to_watch'}/>
+                                <label className='block' htmlFor="plan_to_watch">Plan to Watch</label>
+                            </div> :
+                            <div className={`${styles.radioButton}`}>
+                                <input type="radio" id="plan_to_read" name="status" value="plan_to_read" onChange={(e) => setStatus(e.target.value)} checked={status === 'plan_to_read'}/>
+                                <label className='block' htmlFor="plan_to_read">Plan to Read</label>
+                            </div>
+                        }
+                    </fieldset>
                 </div>
 
-                <button type='submit' className='bg-red-300 m-4 hover:cursor-pointer'>Search</button>
-                <button type='reset' className='bg-blue-300 m-4 hover:cursor-pointer'>Reset</button>
+                <div className={`${styles.buttons}`}>
+                    <button type='reset' className={`${styles.search} + bg-blue-300`}>Reset</button>
+                    <button type='submit' className={`${styles.search} + bg-red-300`}>Search</button>
+                </div>
             </form>
 
-                {animeList?.data?.length > 0 & animeList !== undefined & animeList !== null ?
-                    <div className='flex flex-row flex-wrap bg-gray-300 w-full h-96'>
-                        {animeList?.data?.map(datum => {
-                            return(
-                                <div key={datum.node.id} className='mx-6'>
-                                    <div className='h-32 w-32 relative'>
-                                        <Image unoptimized fill src={`${datum.node.main_picture.large}`} alt={datum.node.title}/>
-                                    </div>
-                                    {/* <div className='flex-wrap'> */}
-                                        {datum.node.title}
-                                    {/* </div> */}
+            {
+            animeList?.data?.length > 0 & animeList !== undefined & animeList !== null ?
+                <div className='flex flex-row flex-wrap'>
+                    {animeList?.data?.map(datum => {
+                        return(
+                            <div key={datum.node.id} className='mx-6'>
+                                <div className='h-32 w-32 relative'>
+                                    <Image unoptimized fill src={`${datum.node.main_picture.large}`} alt={datum.node.title}/>
                                 </div>
-                            )
-                        })}
-                        <div className='flex flex-row place-content-center w-full bg-slate-50'>
-                            {animeList?.paging?.previous ? <div onClick={() => loadPaginationData(`${animeList?.paging?.previous}`)}>View previous 10</div> : <div></div>}
+                                {datum.node.title}
+                            </div>
+                        )
+                    })}
 
-                            {animeList?.paging?.next ? <div onClick={() => loadPaginationData(`${animeList?.paging?.next}`)}>View next 10</div> : <div></div>}
-                        </div>
+                    <div className='flex flex-row place-content-center gap-6 w-full mt-1'>
+                        {animeList?.paging?.previous ? <div className={`${styles.paginationButton}`} onClick={() => loadPaginationData(`${animeList?.paging?.previous}`)}>Last 10</div> : <div></div>}
+
+                        {animeList?.paging?.next ? <div className={`${styles.paginationButton}`} onClick={() => loadPaginationData(`${animeList?.paging?.next}`)}>Next 10</div> : <div></div>}
                     </div>
-                : <></>}
+
+                </div>
+            : <></>
+            }
         </div>
     )
 }

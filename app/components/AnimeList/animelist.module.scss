@@ -1,14 +1,57 @@
 .animelistForm {
-    width: 100%;
+    width: 66%;
+    margin: 0.5rem;
     --tw-bg-opacity: 1;
     background-color: rgb(203 213 225 / var(--tw-bg-opacity));
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 
     .inputForm {
         display: flex;
         flex-direction: column;
+        width: 100%;
+        align-items: center;
 
         .usernameInput {
             margin: 1rem;
+            margin-left: 0rem;
+            width: 33%;
+            text-align: center;
         }
+
+        .radioButtonFieldSet {
+            display: flex;
+            flex-direction: col;
+            width: 100%;
+            gap: 0.5rem;
+
+            .radioButton {
+                display: inline-block;
+                text-align: center;
+            }
+        }
+
+        .listType {
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+    }
+    .buttons {
+        display: flex;
+        flex-direction: row;
+
+        .search, .reset {
+            :hover {
+                cursor: pointer;
+            }
+            margin: 1rem;
+            border-radius: 1rem;
+            padding: 0.25rem;
+        }
+    }
+
+    .paginationButton {
+        cursor: pointer;
     }
 }

@@ -1,6 +1,8 @@
 const MAL_CLIENT_ID = process.env.MAL_CLIENT_ID
 import { NextResponse } from 'next/server';
 
+//to add get??? or smth
+
 export async function POST(req) {
     const data = await req.json()
     console.log(data)
