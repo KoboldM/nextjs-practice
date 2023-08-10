@@ -67,8 +67,7 @@ export default function AnimeList() {
     }
 
     return(
-        <div className={`${styles.animelistForm} + rounded-lg shadow-lg`}>
-            {console.log(animeList)}
+        <div className={`${styles.animelistForm} + rounded-lg shadow-lg container mx-auto`}>
             <form className={`${styles.inputForm}`} method='POST' onSubmit={(e) => handleSubmit(e)} onReset={(e) => handleReset(e)}>
                 <input type='text' className={`${styles.usernameInput} + rounded pl-4`} value={query} onChange={e => setQuery(e.target.value)} placeholder='MAL Username'></input>
 
@@ -145,27 +144,32 @@ export default function AnimeList() {
 
             {
             animeList?.data?.length > 0 & animeList !== undefined & animeList !== null ?
-                <div className='flex flex-row flex-wrap'>
+                <div className='flex-grow w-full px-12 grid grid-cols-5 gap-4'>
                     {animeList?.data?.map(datum => {
                         return(
-                            <a key={datum.node.id} className='mx-6' target='_blank' href={searchedType === 'anime' ? `https://myanimelist.net/anime/${datum.node.id}` : `https://myanimelist.net/manga/${datum.node.id}`}>
-                                <div className='h-32 w-32 relative'>
-                                    <Image unoptimized fill src={`${datum.node.main_picture.large}`} alt={datum.node.title}/>
-                                </div>
-                                {datum.node.title}
+                            <a key={datum.node.id} className={`${styles.animeImage}`} target='_blank' 
+                                href={searchedType === 'anime' ? `https://myanimelist.net/anime/${datum.node.id}` : `https://myanimelist.net/manga/${datum.node.id}`}
+                                style={{ backgroundImage: `url(${datum.node.main_picture.large})`}}>
+                                    <div className='
+                                    bg-black bg-opacity-0 hover:bg-opacity-50
+                                    opacity-0 hover:opacity-100
+                                    transition-all duration-500
+                                    h-full text-center justify-center align-middle flex flex-col
+                                    text-xl text-white
+                                    '>
+                                        {datum.node.title}
+                                    </div>
                             </a>
                         )
                     })}
-
-                    <div className='flex flex-row place-content-center gap-6 w-full mt-1'>
-                        {animeList?.paging?.previous ? <div className={`${styles.paginationButton}`} onClick={() => loadPaginationData(`${animeList?.paging?.previous}`)}>Last 10</div> : <div></div>}
-
-                        {animeList?.paging?.next ? <div className={`${styles.paginationButton}`} onClick={() => loadPaginationData(`${animeList?.paging?.next}`)}>Next 10</div> : <div></div>}
-                    </div>
-
                 </div>
             : <></>
             }
+            <div className='flex flex-row place-content-center gap-6 w-full mt-1'>
+                {animeList?.paging?.previous ? <div className={`${styles.paginationButton}`} onClick={() => loadPaginationData(`${animeList?.paging?.previous}`)}>Last 10</div> : <div></div>}
+
+                {animeList?.paging?.next ? <div className={`${styles.paginationButton}`} onClick={() => loadPaginationData(`${animeList?.paging?.next}`)}>Next 10</div> : <div></div>}
+            </div>
         </div>
     )
 }

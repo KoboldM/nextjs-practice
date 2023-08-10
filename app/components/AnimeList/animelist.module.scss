@@ -51,6 +51,12 @@
         }
     }
 
+    .animeImage {
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
     .paginationButton {
         cursor: pointer;
     }
