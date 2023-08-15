@@ -3,6 +3,11 @@ import styles from './animelist.module.scss'
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
+import { GridLoader } from 'react-spinners';
+
+const override = {
+    margin: '0 auto'
+}
 
 export default function AnimeList() {
     const [query, setQuery] = useState('')
@@ -10,6 +15,7 @@ export default function AnimeList() {
     const [searchedType, setSearchedType] = useState()
     const [searchListType, setSearchListType] = useState('anime')
     const [status, setStatus] = useState('all')
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         // this can possibly be less weird looking w nested switch case but idk
@@ -29,6 +35,7 @@ export default function AnimeList() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        setLoading(true)
 
         fetch('api/getanimelist/', {
             method: 'POST',
@@ -41,11 +48,13 @@ export default function AnimeList() {
             .then(data => {
                 setSearchedType(searchListType)
                 setAnimeList(data)
+                setLoading(false)
             })
             .catch(err => console.log(err))
     }
 
     const loadPaginationData = async (url) => {
+        setLoading(true)
         fetch('api/getpaginateanimelist/', {
             method: 'POST',
             headers: {
@@ -55,6 +64,7 @@ export default function AnimeList() {
         }).then(data => data.json())
         .then(data =>{
             setAnimeList(data)
+            setLoading(false)
         })
         .catch(err => console.log(err))
     }
@@ -70,7 +80,6 @@ export default function AnimeList() {
         <div className={`${styles.animelistForm} + rounded-lg shadow-lg container mx-auto`}>
             <form className={`${styles.inputForm}`} method='POST' onSubmit={(e) => handleSubmit(e)} onReset={(e) => handleReset(e)}>
                 <input type='text' className={`${styles.usernameInput} + rounded pl-4`} value={query} onChange={e => setQuery(e.target.value)} placeholder='MAL Username'></input>
-
                 <div className={`${styles.listType}`}>
                     List Type
                     <fieldset className={`${styles.radioButtonFieldSet}`}>
@@ -142,34 +151,43 @@ export default function AnimeList() {
                 </div>
             </form>
 
-            {
-            animeList?.data?.length > 0 & animeList !== undefined & animeList !== null ?
-                <div className='flex-grow w-full px-12 grid grid-cols-5 gap-4'>
-                    {animeList?.data?.map(datum => {
-                        return(
-                            <a key={datum.node.id} className={`${styles.animeImage}`} target='_blank' 
-                                href={searchedType === 'anime' ? `https://myanimelist.net/anime/${datum.node.id}` : `https://myanimelist.net/manga/${datum.node.id}`}
-                                style={{ backgroundImage: `url(${datum.node.main_picture.large})`}}>
-                                    <div className='
-                                    bg-black bg-opacity-0 hover:bg-opacity-50
-                                    opacity-0 hover:opacity-100
-                                    transition-all duration-500
-                                    h-full text-center justify-center align-middle flex flex-col
-                                    text-xl text-white
-                                    '>
-                                        {datum.node.title}
-                                    </div>
-                            </a>
-                        )
-                    })}
-                </div>
-            : <></>
+            { loading ?
+                    <GridLoader
+                    loading={loading}
+                    size={25}
+                    aria-label="Loading Spinner"
+                    data-testid="loader"
+                    cssOverride={override}
+                    color='#1E90FF'
+                /> :
+                animeList?.data?.length > 0 & animeList !== undefined & animeList !== null ?
+                    <div className='flex-grow w-full px-12 grid grid-cols-5 gap-4'>
+                        {animeList?.data?.map(datum => {
+                            return(
+                                <a key={datum.node.id} className={`${styles.animeImage}`} target='_blank'
+                                    href={searchedType === 'anime' ? `https://myanimelist.net/anime/${datum.node.id}` : `https://myanimelist.net/manga/${datum.node.id}`}
+                                    style={{ backgroundImage: `url(${datum.node.main_picture.large})`}}>
+                                        <div className='
+                                        bg-black bg-opacity-0 hover:bg-opacity-50
+                                        opacity-0 hover:opacity-100
+                                        transition-all duration-500
+                                        h-full text-center justify-center align-middle flex flex-col
+                                        text-xl text-white
+                                        '>
+                                            {datum.node.title}
+                                        </div>
+                                </a>
+                            )
+                        })}
+                    </div>
+                : <></>
             }
-            <div className='flex flex-row place-content-center gap-6 w-full mt-1'>
-                {animeList?.paging?.previous ? <div className={`${styles.paginationButton}`} onClick={() => loadPaginationData(`${animeList?.paging?.previous}`)}>Last 10</div> : <div></div>}
 
-                {animeList?.paging?.next ? <div className={`${styles.paginationButton}`} onClick={() => loadPaginationData(`${animeList?.paging?.next}`)}>Next 10</div> : <div></div>}
-            </div>
+            <div className={`${loading ? 'hidden' : ''} + font-bold flex flex-row bottom-0 place-content-center gap-6 w-full mt-1`}>
+                {animeList?.paging?.previous ? <div className={`${styles.paginationButton}`} onClick={() => loadPaginationData(`${animeList?.paging?.previous}`)}>Last 10</div> : <></>}
+
+                {animeList?.paging?.next ? <div className={`${styles.paginationButton}`} onClick={() => loadPaginationData(`${animeList?.paging?.next}`)}>Next 10</div> : <></>}
+            </div> 
         </div>
     )
 }
